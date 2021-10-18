@@ -58,8 +58,17 @@ fn parse_package(user_input: Vec<String>, pppkg_vars: &GlobalVars) -> Package {
     toml::from_str(&std::fs::read_to_string(file).unwrap()).unwrap()
 }
 
+fn get_element(package: &Package, pppkg_vars: &GlobalVars) -> usize {
+    if package.arches.len() == 2 {
+        pppkg_vars.arch
+    } else {
+        pppkg_vars.arch - 1
+    }
+}
+
 fn install(package: Package, pppkg_vars: &GlobalVars) {
-    let url = &package.urls[pppkg_vars.arch];
+    let element = get_element(&package, pppkg_vars);
+    let url = &package.urls[element];
     let response = reqwest::blocking::get(url).expect("failed to download tarball");
 
     let fname = response
@@ -86,15 +95,16 @@ fn install(package: Package, pppkg_vars: &GlobalVars) {
 }
 
 fn meta(package: Package, pppkg_vars: &GlobalVars) {
+    let element = get_element(&package, pppkg_vars);
     // Grab the right element from the vector based on the arch
     println!("\
         {} ({}) [{}]\n\
         ----\n\
         {}\n\
         {}\
-    ", package.name, package.version, package.arches[pppkg_vars.arch], 
+    ", package.name, package.version, package.arches[element], 
     package.description, 
-    package.urls[pppkg_vars.arch]);
+    package.urls[element]);
 }
 
 fn main() {

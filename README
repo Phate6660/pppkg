@@ -1,0 +1,12 @@
+Running:
+- `cargo run` (it will print a quick help, but it also ensures certain dirs are created)
+- `cp -r packages/* ~/.pppkg/packages/`
+- Then do whatever with it (e.g. `cargo run -- install firefox`)
+
+If you'd like to see debug output, set the env variable RUST_LOG to info.
+
+Operations:
+- i | install
+- l | list
+  + -a | --available
+- m | meta (view info about a package)

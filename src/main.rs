@@ -125,7 +125,7 @@ fn main() {
         packages: ensure_directory_and_return_path(&packages_dir),
     };
     let user_input: Vec<String> = std::env::args().collect();
-    match user_input[1].as_str() {
+    match user_input.get(1).unwrap_or(&"NOTHING".to_string()).as_str() {
         "i" | "install" => {
             let package = parse_package(user_input, &pppkg_vars);
             install(package, &pppkg_vars);
@@ -135,6 +135,7 @@ fn main() {
             let package = parse_package(user_input, &pppkg_vars);
             meta(package);
         },
-        _ => println!("Sorry, {} is not a valid operation!", user_input[0]),
+        "NOTHING" => println!("Currently install, list, and meta are supported."),
+        _ => println!("Sorry, {} is not a valid operation!", user_input[1]),
     }
 }

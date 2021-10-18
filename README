@@ -12,6 +12,7 @@ Operations:
 - m | meta (view info about a package)
 
 How it works:
+- Parses package config at $HOME/.pppkg/packages/PACKAGE_NAME.toml
 - Save tarball to $HOME/.pppkg/downloads/
 - Extract tarball to $HOME/.pppkg/opt/PACKAGE_NAME/
 - TODO: Think of a way to dynamically find and symlink binaries to $HOME/.pppkg/bin/

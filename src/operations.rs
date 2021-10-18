@@ -3,6 +3,7 @@ use crate::{GlobalVars, Package};
 use crate::shared_functions::get_element;
 use log::info;
 
+/// Operation pertaining to listing packages.
 pub fn list(user_input: Vec<String>, pppkg_vars: GlobalVars) {
     match user_input[2].as_str() {
         "-a" | "--available" => {
@@ -15,6 +16,7 @@ pub fn list(user_input: Vec<String>, pppkg_vars: GlobalVars) {
     }
 }
 
+/// Operation for installing packages.
 pub fn install(package: Package, pppkg_vars: &GlobalVars) {
     let element = get_element(&package, pppkg_vars);
     let url = &package.urls[element];
@@ -41,11 +43,16 @@ pub fn install(package: Package, pppkg_vars: &GlobalVars) {
     let extraction_path = [pppkg_vars.opt.to_str().unwrap(), "/", &package.name].concat();
     let dest = std::path::Path::new(&extraction_path);
     uncompress_archive(&mut source, dest, Ownership::Ignore).expect("could not unpack archive");
+    info!("Finished extracting the tarball!")
 }
 
+/// Operation for viewing the metadata of a package.
 pub fn meta(package: Package, pppkg_vars: &GlobalVars) {
     let element = get_element(&package, pppkg_vars);
-    // Grab the right element from the vector based on the arch
+    // name (version) [arch]
+    // ----
+    // description
+    // url
     println!("\
         {} ({}) [{}]\n\
         ----\n\

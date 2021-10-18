@@ -9,6 +9,7 @@ use shared_functions::{ensure_directory_and_return_path, parse_package};
 use std::path::Path;
 
 #[derive(Debug)]
+/// Contains all of the necessary global variables for the package manager.
 pub struct GlobalVars<'a> {
     // Arches:
     // - 0 is x86
@@ -22,6 +23,8 @@ pub struct GlobalVars<'a> {
 }
 
 #[derive(Debug, Deserialize)]
+/// This struct is used for serializing the config files for packages.
+/// arches and urls are vectors as they both deal with multiple architectures.
 pub struct Package {
     name: String,
     description: String,
@@ -54,6 +57,7 @@ fn main() {
         opt: ensure_directory_and_return_path(&opt_dir),
         packages: ensure_directory_and_return_path(&packages_dir),
     };
+    // Collect args passed to the program.
     let user_input: Vec<String> = std::env::args().collect();
     match user_input.get(1).unwrap_or(&"NOTHING".to_string()).as_str() {
         "i" | "install" => {

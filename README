@@ -10,3 +10,8 @@ Operations:
 - l | list
   + -a | --available
 - m | meta (view info about a package)
+
+How it works:
+- Save tarball to $HOME/.pppkg/downloads/
+- Extract tarball to $HOME/.pppkg/opt/PACKAGE_NAME/
+- TODO: Think of a way to dynamically find and symlink binaries to $HOME/.pppkg/bin/

@@ -1,6 +1,6 @@
 name = "Firefox"
 description = "Not the most amazing web browser, but better than the alternatives."
-version = "93"
+version = "93.0"
 urls = [
     "https://download-installer.cdn.mozilla.net/pub/firefox/releases/93.0/linux-i686/en-US/firefox-93.0.tar.bz2",
     "https://download-installer.cdn.mozilla.net/pub/firefox/releases/93.0/linux-x86_64/en-US/firefox-93.0.tar.bz2"

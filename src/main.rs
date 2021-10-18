@@ -20,6 +20,10 @@ fn ensure_directory_and_return_path(dir: &str) -> &Path {
 
 #[derive(Debug)]
 pub struct GlobalVars<'a> {
+    // Arches:
+    // - 0 is x86
+    // - 1 is x86_64
+    pub arch: usize,
     pub base: &'a Path,
     pub bin: &'a Path,
     pub downloads: &'a Path,
@@ -55,13 +59,7 @@ fn parse_package(user_input: Vec<String>, pppkg_vars: &GlobalVars) -> Package {
 }
 
 fn install(package: Package, pppkg_vars: &GlobalVars) {
-    // Grab the right element from the vector based on the arch
-    #[cfg(target_arch = "x86")]
-    let element = 0;
-    #[cfg(target_arch = "x86_64")]
-    let element = 1;
-
-    let url = &package.urls[element];
+    let url = &package.urls[pppkg_vars.arch];
     let response = reqwest::blocking::get(url).expect("failed to download tarball");
 
     let fname = response
@@ -87,21 +85,16 @@ fn install(package: Package, pppkg_vars: &GlobalVars) {
     uncompress_archive(&mut source, dest, Ownership::Ignore).expect("could not unpack archive");
 }
 
-fn meta(package: Package) {
+fn meta(package: Package, pppkg_vars: &GlobalVars) {
     // Grab the right element from the vector based on the arch
-    #[cfg(target_arch = "x86")]
-    let element = 0;
-    #[cfg(target_arch = "x86_64")]
-    let element = 1;
-
     println!("\
         {} ({}) [{}]\n\
         ----\n\
         {}\n\
         {}\
-    ", package.name, package.version, package.arches[element], 
+    ", package.name, package.version, package.arches[pppkg_vars.arch], 
     package.description, 
-    package.urls[element]);
+    package.urls[pppkg_vars.arch]);
 }
 
 fn main() {
@@ -118,6 +111,10 @@ fn main() {
     let opt_dir = [&home, "/opt"].concat();
     let packages_dir = [&home, "/packages"].concat();
     let pppkg_vars = GlobalVars {
+        #[cfg(target_arch = "x86")]
+        arch: 0,
+        #[cfg(target_arch = "x86_64")]
+        arch: 1,
         base: ensure_directory_and_return_path(&home),
         bin: ensure_directory_and_return_path(&bin_dir),
         downloads: ensure_directory_and_return_path(&downloads_dir),
@@ -133,7 +130,7 @@ fn main() {
         "l" | "list" => list(user_input, pppkg_vars),
         "m" | "meta" => {
             let package = parse_package(user_input, &pppkg_vars);
-            meta(package);
+            meta(package, &pppkg_vars);
         },
         "NOTHING" => println!("Currently install, list, and meta are supported."),
         _ => println!("Sorry, {} is not a valid operation!", user_input[1]),

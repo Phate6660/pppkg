@@ -1,0 +1,5 @@
+name = "Discord"
+description = "All-in-one voice and text chat. Recommended to be used with BetterDiscord."
+version = "0.0.16"
+urls = ["https://dl.discordapp.net/apps/linux/0.0.16/discord-0.0.16.tar.gz"]
+arches = ["x86_64"]

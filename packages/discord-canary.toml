@@ -1,0 +1,5 @@
+name = "Discord Canary"
+description = "All-in-one voice and text chat. Recommended to be used with BetterDiscord or Powercord."
+version = "0.0.131"
+urls = ["https://dl-canary.discordapp.net/apps/linux/0.0.131/discord-canary-0.0.131.tar.gz"]
+arches = ["x86_64"]
